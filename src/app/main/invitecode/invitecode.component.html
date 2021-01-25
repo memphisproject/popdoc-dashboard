@@ -1,0 +1,111 @@
+<div class="my-3 my-md-5">
+
+  <div class="container">
+    <div class="page-header">
+      <div class="page-title">
+        Generate Invite Code
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-xl-12">
+        <div class="card" [class.card-collapsed] = !t1>
+          <div class="card-header">
+            <h3 class="card-title">Generate</h3>
+            <div class="card-options">
+              <a (click)="toogle1()" *ngIf="t1" class="
+             card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+              <a (click)="toogle1()"  *ngIf="!t1" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-down"></i></a>
+            </div>
+          </div>
+          <div class="card-body">
+
+
+            <div class="row">
+              <div class="col-md-5">
+                <div class="form-group">
+                  <label class="form-label">Code</label>
+                <div class="form-inline">
+                  <input type="text" class="form-control col-9" placeholder="code" name="inviteCode" [(ngModel)]="inviteCode" value="{{inviteCode}}">
+                  <button (click)="generate()" class="btn btn-primary col-3">Generate</button>
+                </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="form-group">
+                  <label class="form-label">Expiry date</label>
+                  <input type="text"
+                         class="form-control"
+                         placeholder="Datepicker"
+                         bsDatepicker
+                         [(ngModel)]="myDate"
+                         name="date"
+                  />
+
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-4">
+                <div class="form-group">
+                  <label class="form-label">Maximum redemptions</label>
+                  <input type="number" name="limitNumber" [(ngModel)]="limitNumber" value="1" class="form-control" placeholder="number max users">
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="card-footer text-right">
+            <div class="d-flex">
+              <button (click)="insertInviteCode()" type="submit" class="btn btn-primary ml-auto">Confirm</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-12 col-xl-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">List</h3>
+            <div class="card-options">
+              <a class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+            </div>
+            <button style="font-size: 10px" type="button" class="ml-2 btn btn-outline-primary"
+                    (click)="InviteCodes=[];fetchInviteCodes();"><i class="fa fa-refresh"></i> Refresh Table
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-outline table-vcenter text-nowrap card-table">
+                <thead>
+                <tr>
+                  <th>PassCode</th>
+                  <th>limitNumber</th>
+                  <th>expiration</th>
+                  <th>created</th>
+                  <th class="text-center"><i class="icon-settings"></i></th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let itens of sortData| paginate: {itemsPerPage: 10, currentPage:p2, id: '2'}; let i = index">
+                  <th class="text-inherit">{{itens.passCode}}</th>
+                  <th class="text-inherit">{{itens.limitNumber}}</th>
+                  <th class="text-inherit">{{itens.expiration | date:'medium'}}</th>
+                  <th class="text-inherit">{{itens.created | date:'medium'}}</th>
+                  <th class="text-inherit"><a (click)="deleteInviteCode(itens._id)" class="icon"><i class="fe fe-trash"></i></a></th>
+                </tr>
+                </tbody>
+              </table>
+              <pagination-controls style="float: right" (pageChange)="p2 = $event" id="2"></pagination-controls>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

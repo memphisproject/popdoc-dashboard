@@ -1,0 +1,188 @@
+<div class="container" *ngIf="showTable">
+  <div class="page-header">
+    <h1 class="page-title">
+      User stats
+    </h1>
+  </div>
+
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title"> Users</h3>
+        <div class="col-sm-6 col-lg-3 ml-auto">
+          <form class="input-icon my-3 my-lg-0 ng-pristine ng-valid">
+            <input type="search" name="searchText" [(ngModel)]="searchText" (input)="filterItem(searchText)"
+                   class="form-control header-search ng-pristine ng-untouched ng-valid ng-empty" placeholder="Search…">
+            <div class="input-icon-addon">
+              <i class="fe fe-search"></i>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover table-outline table-vcenter text-nowrap card-table">
+          <thead>
+          <tr role="row">
+            <th> ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Last Activity<i class="fa fa-fw fa-sort" (click)="sortActivity()"></i></th>
+
+          </tr>
+          </thead>
+          <tbody>
+          <tr role="row" class="odd"
+              *ngFor="let itens of filterUsers | paginate: {itemsPerPage: 10, currentPage:p, id: '1'}; let i = index"
+              (click)="onTabClick(itens)">
+            <th class="text-inherit">{{itens._id}}</th>
+            <th class="text-inherit">{{itens.name}}</th>
+            <th class="text-inherit">{{itens.email}}</th>
+            <th class="text-inherit" *ngIf="itens.lastActivity">{{itens.lastActivity | date:'medium'}}</th>
+            <th class="text-inherit" *ngIf="!itens.lastActivity">No activity recorded</th>
+          </tr>
+          </tbody>
+        </table>
+        <pagination-controls style="float: right" (pageChange)="p = $event" id="1"></pagination-controls>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container" *ngIf="!showTable">
+  <div class="page-header">
+    <h1 class="page-title">
+      User Logs /
+      <small>{{user.name}}</small>
+    </h1>
+  </div>
+
+  <div class="row row-cards">
+
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="card p-3">
+        <div class="d-flex align-items-center">
+                    <span class="stamp stamp-md bg-blue mr-3">
+                      <i class="fa fa-sign-out"></i>
+                    </span>
+          <div>
+            <h4 class="m-0"><a href="javascript:void(0)">{{loginCounter}}
+              <small>Logins</small>
+            </a></h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="card p-3">
+        <div class="d-flex align-items-center">
+                    <span class="stamp stamp-md bg-green mr-3">
+                      <i class="fa fa-refresh"></i>
+                    </span>
+          <div>
+            <h4 class="m-0"><a href="javascript:void(0)">{{refreshCounter}}
+              <small>Refresh</small>
+            </a></h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="card p-3">
+        <div class="d-flex align-items-center">
+                    <span class="stamp stamp-md bg-red mr-3">
+                      <i class="fa fa-align-right"></i>
+                    </span>
+          <div>
+            <h4 class="m-0"><a href="javascript:void(0)">{{tileCounter}}
+              <small>New Tiles</small>
+            </a></h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="card p-3">
+        <div class="d-flex align-items-center">
+                    <span class="stamp stamp-md bg-blue mr-3">
+                      <i class="fa fa-book"></i>
+                    </span>
+          <div>
+            <h4 class="m-0"><a href="javascript:void(0)">{{collectionCounter}}
+              <small>New Collections</small>
+            </a></h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="card p-3">
+        <div class="d-flex align-items-center">
+                    <span class="stamp stamp-md bg-yellow mr-3">
+                      <i class="fe fe-message-square"></i>
+                    </span>
+          <div>
+            <h4 class="m-0"><a href="javascript:void(0)">{{messageCounter}}
+              <small>New messages</small>
+            </a></h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-3">
+      <div class="card p-3">
+        <div class="d-flex align-items-center">
+                    <span class="stamp stamp-md bg-blue mr-3">
+                      <i class="fa fa-key"></i>
+                    </span>
+          <div>
+            <h4 class="m-0"><a> <small>Used code: {{user.inviteCode}}</small>  </a></h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row row-cards">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <button style="font-size: 10px" type="button" class="btn btn-outline-primary"
+                  (click)="showTable=true; UsersLogs=[]"><i class="fa fa-arrow-left mr-2"></i>Back
+          </button>
+          <button style="font-size: 10px" type="button" class="ml-2 btn btn-outline-primary"
+                  (click)="onTabClick(user); UsersLogs=[]"><i class="fa fa-refresh"></i> Refresh Table
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover table-outline table-vcenter text-nowrap card-table">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Date</th>
+
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let itens of sortData| paginate: {itemsPerPage: 10, currentPage:p2, id: '2'}; let i = index">
+                <th class="text-inherit">{{itens._id}}</th>
+                <th class="text-inherit">{{itens.logType}}</th>
+                <th class="text-inherit">{{itens.created | date:'medium'}}</th>
+              </tr>
+              </tbody>
+            </table>
+            <pagination-controls style="float: right" (pageChange)="p2 = $event" id="2"></pagination-controls>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
